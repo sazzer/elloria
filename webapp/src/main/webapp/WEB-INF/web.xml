@@ -6,6 +6,22 @@
          metadata-complete="true">
     <display-name>elloria</display-name>
 
+    <context-param>
+        <param-name>contextClass</param-name>
+        <param-value>
+            org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+        </param-value>
+    </context-param>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            uk.co.grahamcox.elloria.spring.CoreContext
+        </param-value>
+    </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
     <welcome-file-list>
         <welcome-file/>
     </welcome-file-list>
