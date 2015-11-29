@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import java.time.Clock
 
 /**
@@ -18,6 +19,7 @@ open class CoreContext {
      * @return the clock
      */
     @Bean(name = arrayOf("clock"))
+    @Profile("!test")
     open fun clock() = Clock.systemUTC()
 
     /**
