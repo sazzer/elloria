@@ -12,6 +12,11 @@
     <name>Elloria - OAuth2 Service - Web Layer</name>
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>uk.co.grahamcox.elloria.oauth2</groupId>
             <artifactId>elloria-oauth2-impl</artifactId>
             <version>${project.version}</version>
