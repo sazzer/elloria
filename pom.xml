@@ -19,6 +19,7 @@
         <maven>${version.maven}</maven>
     </prerequisites>
     <modules>
+        <module>oauth2</module>
         <module>webapp</module>
         <module>verification</module>
     </modules>

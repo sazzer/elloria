@@ -41,6 +41,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>uk.co.grahamcox.elloria.oauth2</groupId>
+            <artifactId>elloria-oauth2-webapp</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
