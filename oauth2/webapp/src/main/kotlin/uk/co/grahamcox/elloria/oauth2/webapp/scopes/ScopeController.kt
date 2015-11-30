@@ -3,24 +3,29 @@ package uk.co.grahamcox.elloria.oauth2.webapp.scopes
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
+import uk.co.grahamcox.elloria.oauth2.scopes.ScopeFinder
+import uk.co.grahamcox.elloria.oauth2.scopes.Scope as InternalScope
+
+/**
+ * Map an Internal representation of a Scope onto an HTTP Representation of ne
+ */
+private fun toHttpScope(scope: InternalScope) = Scope(
+    id = scope.id.toString(),
+    namespace = scope.id.namespace,
+    scope = scope.id.scope,
+    description = scope.description
+)
 
 /**
  * Controller for working with scopes
  */
 @Controller
 @RequestMapping("/api/oauth2/scopes")
-class ScopeController {
-    /** The scopes that are in the system */
-    private val scopes = listOf(
-        Scope(id = "oauth2:read", namespace = "oauth", scope = "read", description = "Ability to read client details"),
-        Scope(id = "oauth2:write", namespace = "oauth", scope = "write", description = "Ability to write client details"),
-        Scope(id = "oauth2:admin", namespace = "oauth", scope = "admin", description = "Ability to administer all client details")
-    )
-
+class ScopeController(private val scopeFinder: ScopeFinder) {
     /**
      * List the scopes that are available
      */
     @RequestMapping
     @ResponseBody
-    fun listScopes() = scopes
+    fun listScopes() = scopeFinder.listScopes().map { s -> toHttpScope(s) }
 }

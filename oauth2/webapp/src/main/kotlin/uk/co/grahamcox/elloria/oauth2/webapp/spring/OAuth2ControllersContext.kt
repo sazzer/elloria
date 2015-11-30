@@ -1,7 +1,9 @@
 package uk.co.grahamcox.elloria.oauth2.webapp.spring
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import uk.co.grahamcox.elloria.oauth2.scopes.ScopeFinder
 import uk.co.grahamcox.elloria.oauth2.webapp.scopes.ScopeController
 
 /**
@@ -14,5 +16,6 @@ open class OAuth2ControllersContext {
      * @return the scopes controller
      */
     @Bean
-    open fun scopeController() = ScopeController()
+    @Autowired
+    open fun scopeController(scopeFinder: ScopeFinder) = ScopeController(scopeFinder)
 }

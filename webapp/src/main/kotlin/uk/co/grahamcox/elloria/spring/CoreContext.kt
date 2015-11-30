@@ -6,13 +6,18 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 import org.springframework.context.annotation.Profile
+import uk.co.grahamcox.elloria.oauth2.spring.OAuth2CoreContext
 import java.time.Clock
 
 /**
  * The root configuration to use for the core webapp Spring context
  */
 @Configuration
+@Import(
+        OAuth2CoreContext::class
+)
 open class CoreContext {
     /**
      * Configure the clock to use
