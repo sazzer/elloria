@@ -1,12 +1,11 @@
 package uk.co.grahamcox.elloria.oauth2.webapp.scopes
 
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.*
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeFinder
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeId
+import uk.co.grahamcox.elloria.oauth2.scopes.UnknownScopeException
 import uk.co.grahamcox.elloria.oauth2.scopes.Scope as InternalScope
 
 /**
@@ -25,6 +24,15 @@ private fun toHttpScope(scope: InternalScope) = Scope(
 @Controller
 @RequestMapping("/api/oauth2/scopes")
 class ScopeController(private val scopeFinder: ScopeFinder) {
+    /**
+     * Handle a request for an unknown Scope by returning an HTTP 404
+     */
+    @ExceptionHandler(UnknownScopeException::class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun handleUnknownScope() {
+
+    }
+
     /**
      * List the scopes that are available
      * @return the scopes
