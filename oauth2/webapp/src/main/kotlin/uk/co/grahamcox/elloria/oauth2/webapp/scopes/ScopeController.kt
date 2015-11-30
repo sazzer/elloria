@@ -3,6 +3,7 @@ package uk.co.grahamcox.elloria.oauth2.webapp.scopes
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import uk.co.grahamcox.elloria.oauth2.scopes.InvalidScopeIdentifierException
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeFinder
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeId
 import uk.co.grahamcox.elloria.oauth2.scopes.UnknownScopeException
@@ -26,12 +27,32 @@ private fun toHttpScope(scope: InternalScope) = Scope(
 class ScopeController(private val scopeFinder: ScopeFinder) {
     /**
      * Handle a request for an unknown Scope by returning an HTTP 404
+     * @param e The exception to handle
+     * @return the error details
      */
     @ExceptionHandler(UnknownScopeException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    fun handleUnknownScope() {
+    @ResponseBody
+    fun handleUnknownScope(e: UnknownScopeException) = mapOf(
+        "error" to "UNKNOWN_SCOPE",
+        "message" to e.message
+    )
 
-    }
+    /**
+     * Handle a request for an unknown Scope by returning an HTTP 404
+     * @param e The exception to handle
+     * @return the error details
+     */
+    @ExceptionHandler(InvalidScopeIdentifierException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    fun handleInvalidScopeId(e: InvalidScopeIdentifierException) = mapOf(
+        "error" to "INVALID_SCOPE_ID",
+        "namespace" to e.namespace,
+        "scope" to e.scope,
+        "message" to e.message
+    )
+
 
     /**
      * List the scopes that are available

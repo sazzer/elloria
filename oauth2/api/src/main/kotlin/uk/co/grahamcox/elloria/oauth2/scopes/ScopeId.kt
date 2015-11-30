@@ -7,7 +7,9 @@ private const val SCOPE_ID_SEPARATOR = ":";
  * Exception thrown when an invalid Scope Identifier is constructed
  * @param message The error message
  */
-class InvalidScopeIdentifierException(message: String) : Exception(message)
+class InvalidScopeIdentifierException(val namespace: String?,
+                                      val scope: String,
+                                      message: String) : Exception(message)
 
 /**
  * Representation of the ID of a Scope
@@ -34,18 +36,18 @@ data class ScopeId(val namespace: String?,
     init {
         if (namespace != null) {
             if (namespace.isBlank()) {
-                throw InvalidScopeIdentifierException("Namespace must not be the empty string")
+                throw InvalidScopeIdentifierException(namespace, scope, "Namespace must not be the empty string")
             }
             if (namespace.contains(SCOPE_ID_SEPARATOR)) {
-                throw InvalidScopeIdentifierException("Namespace must not contain a '${SCOPE_ID_SEPARATOR}' character")
+                throw InvalidScopeIdentifierException(namespace, scope, "Namespace must not contain a '${SCOPE_ID_SEPARATOR}' character")
             }
         }
 
         if (scope.isBlank()) {
-            throw InvalidScopeIdentifierException("Scope must not be the empty string")
+            throw InvalidScopeIdentifierException(namespace, scope, "Scope must not be the empty string")
         }
         if (scope.contains(SCOPE_ID_SEPARATOR)) {
-            throw InvalidScopeIdentifierException("Scope must not contain a '${SCOPE_ID_SEPARATOR}' character")
+            throw InvalidScopeIdentifierException(namespace, scope, "Scope must not contain a '${SCOPE_ID_SEPARATOR}' character")
         }
     }
     /**
