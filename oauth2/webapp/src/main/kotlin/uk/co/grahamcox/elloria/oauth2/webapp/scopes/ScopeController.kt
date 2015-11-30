@@ -7,6 +7,7 @@ import uk.co.grahamcox.elloria.oauth2.scopes.InvalidScopeIdentifierException
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeFinder
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeId
 import uk.co.grahamcox.elloria.oauth2.scopes.UnknownScopeException
+import java.util.*
 import uk.co.grahamcox.elloria.oauth2.scopes.Scope as InternalScope
 
 /**
@@ -60,7 +61,18 @@ class ScopeController(private val scopeFinder: ScopeFinder) {
      */
     @RequestMapping
     @ResponseBody
-    fun listScopes() = scopeFinder.listScopes().map { s -> toHttpScope(s) }
+    fun listScopes(@RequestParam(value = "namespace", required = false) namespace: String?,
+                   @RequestParam(value = "scope", required = false) scope: String?): List<Scope> {
+        val filters = HashMap<ScopeFinder.ScopeField, String>()
+        if (namespace != null) {
+            filters.put(ScopeFinder.ScopeField.NAMESPACE, namespace)
+        }
+        if (scope != null) {
+            filters.put(ScopeFinder.ScopeField.SCOPE, scope)
+        }
+
+        return scopeFinder.listScopes(filters).map { s -> toHttpScope(s) }
+    }
 
     /**
      * Get the scope with the given ID

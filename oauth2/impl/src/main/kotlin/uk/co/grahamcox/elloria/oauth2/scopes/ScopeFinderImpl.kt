@@ -11,10 +11,23 @@ class ScopeFinderImpl : ScopeFinder {
     )
 
     /**
-     * Get a list of all of the known scopes
+     * List all of the scopes that match the given filters
+     * @param filters The filters to apply to the list
      * @return the list of scopes
      */
-    override fun listScopes(): List<Scope> = scopes
+    override fun listScopes(filters: Map<ScopeFinder.ScopeField, String>): List<Scope> {
+        val namespaceFilter: String? = filters.get(ScopeFinder.ScopeField.NAMESPACE)
+        val scopeFilter: String? = filters.get(ScopeFinder.ScopeField.SCOPE)
+
+        return scopes.filter { s -> when (namespaceFilter) {
+            null -> true
+            "" -> s.id.namespace == null
+            else -> s.id.namespace == namespaceFilter
+        } }.filter { s -> when (scopeFilter) {
+            null -> true
+            else -> s.id.scope == scopeFilter
+        } }
+    }
 
     /**
      * Try to get a single scope with the given ID
