@@ -1,6 +1,7 @@
 package uk.co.grahamcox.elloria.oauth2.scopes
 
 import uk.co.grahamcox.elloria.Page
+import uk.co.grahamcox.elloria.PaginationControls
 
 /**
  * Mechanism to find Scope information
@@ -15,17 +16,13 @@ interface ScopeFinder {
     }
 
     /**
-     * List all of the scopes
-     * @return the list of scopes
-     */
-    fun listScopes() : Page<Scope> = listScopes(mapOf())
-
-    /**
      * List all of the scopes that match the given filters
+     * @param pagination The pagination controls to use
      * @param filters The filters to apply to the list
      * @return the list of scopes
      */
-    fun listScopes(filters: Map<ScopeField, String>) : Page<Scope>
+    fun listScopes(filters: Map<ScopeField, String> = mapOf(),
+                   pagination: PaginationControls = PaginationControls()) : Page<Scope>
 
     /**
      * Get a single scope with the given ID

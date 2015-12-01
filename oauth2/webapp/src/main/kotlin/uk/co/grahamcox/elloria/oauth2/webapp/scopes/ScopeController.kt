@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import uk.co.grahamcox.elloria.Page
+import uk.co.grahamcox.elloria.PaginationControls
 import uk.co.grahamcox.elloria.oauth2.scopes.InvalidScopeIdentifierException
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeFinder
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeId
@@ -63,7 +64,9 @@ class ScopeController(private val scopeFinder: ScopeFinder) {
     @RequestMapping
     @ResponseBody
     fun listScopes(@RequestParam(value = "namespace", required = false) namespace: String?,
-                   @RequestParam(value = "scope", required = false) scope: String?): Page<Scope> {
+                   @RequestParam(value = "scope", required = false) scope: String?,
+                   @RequestParam(value = "offset", defaultValue = "0") offset: Int,
+                   @RequestParam(value = "limit", defaultValue = "10") limit: Int): Page<Scope> {
         val filters = HashMap<ScopeFinder.ScopeField, String>()
         if (namespace != null) {
             filters.put(ScopeFinder.ScopeField.NAMESPACE, namespace)
@@ -72,7 +75,10 @@ class ScopeController(private val scopeFinder: ScopeFinder) {
             filters.put(ScopeFinder.ScopeField.SCOPE, scope)
         }
 
-        return scopeFinder.listScopes(filters).map { s -> toHttpScope(s) }
+        val paginationControls = PaginationControls(offset, limit)
+
+        return scopeFinder.listScopes(filters, paginationControls)
+            .map { s -> toHttpScope(s) }
     }
 
     /**

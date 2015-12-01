@@ -1,6 +1,7 @@
 package uk.co.grahamcox.elloria.oauth2.scopes
 
 import uk.co.grahamcox.elloria.Page
+import uk.co.grahamcox.elloria.PaginationControls
 
 /**
  * Implementation of the Scope Finder
@@ -17,7 +18,15 @@ class ScopeFinderImpl : ScopeFinder {
      * @param filters The filters to apply to the list
      * @return the list of scopes
      */
-    override fun listScopes(filters: Map<ScopeFinder.ScopeField, String>): Page<Scope> {
+
+    /**
+     * List all of the scopes that match the given filters
+     * @param pagination The pagination controls to use
+     * @param filters The filters to apply to the list
+     * @return the list of scopes
+     */
+    override fun listScopes(filters: Map<ScopeFinder.ScopeField, String>,
+                            pagination: PaginationControls) : Page<Scope> {
         val namespaceFilter: String? = filters.get(ScopeFinder.ScopeField.NAMESPACE)
         val scopeFilter: String? = filters.get(ScopeFinder.ScopeField.SCOPE)
 
@@ -29,6 +38,9 @@ class ScopeFinderImpl : ScopeFinder {
             null -> true
             else -> s.id.scope == scopeFilter
         } }
+            .drop(pagination.offset)
+            .take(pagination.limit)
+
 
         return Page(entries, scopes.size)
     }
