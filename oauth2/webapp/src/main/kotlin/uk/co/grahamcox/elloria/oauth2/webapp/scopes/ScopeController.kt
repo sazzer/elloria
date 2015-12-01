@@ -3,6 +3,7 @@ package uk.co.grahamcox.elloria.oauth2.webapp.scopes
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import uk.co.grahamcox.elloria.Page
 import uk.co.grahamcox.elloria.oauth2.scopes.InvalidScopeIdentifierException
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeFinder
 import uk.co.grahamcox.elloria.oauth2.scopes.ScopeId
@@ -62,7 +63,7 @@ class ScopeController(private val scopeFinder: ScopeFinder) {
     @RequestMapping
     @ResponseBody
     fun listScopes(@RequestParam(value = "namespace", required = false) namespace: String?,
-                   @RequestParam(value = "scope", required = false) scope: String?): List<Scope> {
+                   @RequestParam(value = "scope", required = false) scope: String?): Page<Scope> {
         val filters = HashMap<ScopeFinder.ScopeField, String>()
         if (namespace != null) {
             filters.put(ScopeFinder.ScopeField.NAMESPACE, namespace)

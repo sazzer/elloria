@@ -1,5 +1,7 @@
 package uk.co.grahamcox.elloria.oauth2.scopes
 
+import uk.co.grahamcox.elloria.Page
+
 /**
  * Mechanism to find Scope information
  */
@@ -16,14 +18,14 @@ interface ScopeFinder {
      * List all of the scopes
      * @return the list of scopes
      */
-    fun listScopes() : List<Scope> = listScopes(mapOf())
+    fun listScopes() : Page<Scope> = listScopes(mapOf())
 
     /**
      * List all of the scopes that match the given filters
      * @param filters The filters to apply to the list
      * @return the list of scopes
      */
-    fun listScopes(filters: Map<ScopeField, String>) : List<Scope>
+    fun listScopes(filters: Map<ScopeField, String>) : Page<Scope>
 
     /**
      * Get a single scope with the given ID
